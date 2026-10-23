@@ -2,12 +2,20 @@
   // Set the store's public inbox here; the Contact page and email form use this value.
   const siteContactEmail = 'wavestatewears.ws@gmail.com';
   const emailComposeUrl = (subject = '', body = '') => {
-    const params = new URLSearchParams();
-    if (subject) params.set('subject', subject);
-    if (body) params.set('body', body);
-    const query = params.toString();
+    const params = [];
+    if (subject) params.push(`subject=${encodeURIComponent(subject)}`);
+    if (body) params.push(`body=${encodeURIComponent(body)}`);
+    const query = params.join('&');
     return `mailto:${siteContactEmail}${query ? `?${query}` : ''}`;
   };
+  const gmailWebComposeUrl = (subject = '', body = '') => {
+    const params = new URLSearchParams({ view: 'cm', fs: '1', to: siteContactEmail });
+    if (subject) params.set('su', subject);
+    if (body) params.set('body', body);
+    return `https://mail.google.com/mail/?${params.toString()}`;
+  };
+  const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const emailLinkUrl = () => isMobileDevice ? emailComposeUrl() : gmailWebComposeUrl();
   const revealItems = document.querySelectorAll('.intro, .featured, .quote-band, .newsletter, .shop-toolbar, .product-card, .story-image, .story-copy, .story-founder, .story-chapter, .story-philosophy, .story-manifesto, .values > div, .contact-intro, .contact-details > div, .contact-form');
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('reveal-ready');
@@ -227,10 +235,21 @@
   });
 
   const contactForm = document.querySelector('.contact-form');
-  document.querySelectorAll('[data-site-contact-link]').forEach((link) => { link.href = emailComposeUrl(); });
+  document.querySelectorAll('[data-site-contact-link]').forEach((link) => { link.href = emailLinkUrl(); link.target = '_blank'; link.rel = 'noopener noreferrer'; });
   document.querySelectorAll('[data-site-contact-email]').forEach((link) => {
-    link.href = emailComposeUrl();
+    link.href = emailLinkUrl();
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
     link.textContent = `${siteContactEmail} \u2197`;
+    if (isMobileDevice) {
+      const fallback = document.createElement('a');
+      fallback.className = 'email-web-fallback';
+      fallback.href = gmailWebComposeUrl();
+      fallback.target = '_blank';
+      fallback.rel = 'noopener noreferrer';
+      fallback.textContent = 'Open Gmail on the web';
+      link.insertAdjacentElement('afterend', fallback);
+    }
   });
   if (contactForm) {
     const methodChoices = contactForm.querySelectorAll('input[name="contact-method"]');
@@ -239,7 +258,7 @@
     const status = contactForm.querySelector('.form-message');
     const selectedMethod = () => contactForm.querySelector('input[name="contact-method"]:checked')?.value || 'email';
     const updateSendLabel = () => {
-      if (sendButton) sendButton.innerHTML = selectedMethod() === 'whatsapp' ? 'Continue in WhatsApp <span>\u2197</span>' : 'Send via email <span>\u2197</span>';
+      if (sendButton) sendButton.innerHTML = selectedMethod() === 'whatsapp' ? 'Send via WhatsApp <span>\u2197</span>' : 'Send via email <span>\u2197</span>';
       if (emailField) emailField.required = selectedMethod() === 'email';
     };
     methodChoices.forEach((choice) => choice.addEventListener('change', updateSendLabel));
@@ -263,8 +282,20 @@
         status.textContent = 'Opening your WhatsApp chat with your message ready to send.';
         return;
       }
-      status.textContent = 'Opening your email app with your message ready to send.';
-      window.location.href = emailComposeUrl(topic, message.replace(/\r?\n/g, '\r\n'));
+      const emailBody = message.replace(/\r?\n/g, '\r\n');
+      const composeUrl = isMobileDevice ? emailComposeUrl(topic, emailBody) : gmailWebComposeUrl(topic, emailBody);
+      window.open(composeUrl, '_blank', 'noopener,noreferrer');
+      status.textContent = isMobileDevice
+        ? 'Opening your email app. If it does not open, use the Gmail web option.'
+        : 'Opening Gmail in a new tab.';
+      if (isMobileDevice) {
+        const fallback = document.createElement('a');
+        fallback.href = gmailWebComposeUrl(topic, emailBody);
+        fallback.target = '_blank';
+        fallback.rel = 'noopener noreferrer';
+        fallback.textContent = ' Open Gmail web';
+        status.append(fallback);
+      }
     });
   }
 })();
