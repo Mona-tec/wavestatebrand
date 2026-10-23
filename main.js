@@ -1,5 +1,13 @@
 (() => {
-  const revealItems = document.querySelectorAll('.intro, .featured, .quote-band, .newsletter, .shop-toolbar, .product-card, .story-image, .story-copy, .values > div, .contact-details > div, .contact-form');
+  // Set the store's public inbox here; the Contact page and email form use this value.
+  const siteContactEmail = 'wavestatewears.ws@gmail.com';
+  const gmailComposeUrl = (subject = '', body = '') => {
+    const params = new URLSearchParams({ view: 'cm', fs: '1', to: siteContactEmail });
+    if (subject) params.set('su', subject);
+    if (body) params.set('body', body);
+    return `https://mail.google.com/mail/?${params.toString()}`;
+  };
+  const revealItems = document.querySelectorAll('.intro, .featured, .quote-band, .newsletter, .shop-toolbar, .product-card, .story-image, .story-copy, .story-founder, .story-chapter, .story-philosophy, .story-manifesto, .values > div, .contact-intro, .contact-details > div, .contact-form');
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('reveal-ready');
     const observer = new IntersectionObserver((entries, currentObserver) => entries.forEach((entry) => {
@@ -209,9 +217,53 @@
     cards.forEach((card) => grid.appendChild(card));
   });
 
-  document.querySelectorAll('.newsletter-form, .contact-form').forEach((form) => form.addEventListener('submit', (event) => {
-    event.preventDefault(); const message = form.querySelector('.form-message');
-    if (message) message.textContent = form.classList.contains('newsletter-form') ? 'You\u2019re on the list. Look out for a note from us soon.' : 'Thanks for your note. We\u2019ll be in touch soon.';
+  document.querySelector('.newsletter-form')?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const message = form.querySelector('.form-message');
+    if (message) message.textContent = 'You\u2019re on the list. Look out for a note from us soon.';
     form.reset();
-  }));
+  });
+
+  const contactForm = document.querySelector('.contact-form');
+  document.querySelectorAll('[data-site-contact-link]').forEach((link) => { link.href = gmailComposeUrl(); });
+  document.querySelectorAll('[data-site-contact-email]').forEach((link) => {
+    link.href = gmailComposeUrl();
+    link.textContent = `${siteContactEmail} \u2197`;
+  });
+  if (contactForm) {
+    const methodChoices = contactForm.querySelectorAll('input[name="contact-method"]');
+    const sendButton = contactForm.querySelector('#contact-send');
+    const emailField = contactForm.querySelector('#email');
+    const status = contactForm.querySelector('.form-message');
+    const selectedMethod = () => contactForm.querySelector('input[name="contact-method"]:checked')?.value || 'email';
+    const updateSendLabel = () => {
+      if (sendButton) sendButton.innerHTML = selectedMethod() === 'whatsapp' ? 'Continue in WhatsApp <span>\u2197</span>' : 'Send via email <span>\u2197</span>';
+      if (emailField) emailField.required = selectedMethod() === 'email';
+    };
+    methodChoices.forEach((choice) => choice.addEventListener('change', updateSendLabel));
+    updateSendLabel();
+    contactForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const values = new FormData(contactForm);
+      const name = String(values.get('name') || '').trim();
+      const email = String(values.get('email') || '').trim();
+      const topic = String(values.get('topic') || 'General hello').trim();
+      const message = String(values.get('message') || '').trim();
+      if (selectedMethod() === 'whatsapp') {
+        const number = (contactForm.dataset.whatsappNumber || '').replace(/\D/g, '');
+        if (!number) {
+          status.textContent = `WhatsApp contact is not set up yet. Please choose email or contact us at ${siteContactEmail}.`;
+          return;
+        }
+        const whatsappMessage = `Name: *${name}*\n${email ? `Email: ${email}\n` : ''}Topic: *${topic}*\n\n${message}`;
+        const chatUrl = `https://wa.me/${number}?text=${encodeURIComponent(whatsappMessage)}`;
+        window.open(chatUrl, '_blank', 'noopener,noreferrer');
+        status.textContent = 'Opening your WhatsApp chat with your message ready to send.';
+        return;
+      }
+      status.textContent = 'Opening Gmail with your message ready to send.';
+      window.location.href = gmailComposeUrl(topic, message.replace(/\r?\n/g, '\r\n'));
+    });
+  }
 })();

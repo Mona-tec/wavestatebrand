@@ -901,6 +901,8 @@ h1 em,h2 em,blockquote em {
     flex-wrap:wrap
   }
 }
+.site-header .bag-link { visibility:hidden }
+.shop-page .site-header .bag-link { visibility:visible }
 /* Gentle entrance and scroll motion keeps the storefront feeling calm. */
 @keyframes page-arrive {
   from {
@@ -2251,4 +2253,81 @@ html.modal-open,body.modal-open {
   font-weight:500;
   letter-spacing:.025em;
   line-height:1.55
+}
+
+/* Editorial reveals for the About and Contact pages. */
+.story-founder.reveal,.story-chapter.reveal,.story-philosophy.reveal,.story-manifesto.reveal,
+.contact-intro.reveal,.contact-details>div.reveal,.contact-form.reveal {
+  transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1),filter .9s ease
+}
+.story-founder.reveal:not(.is-visible) { transform:translate3d(-30px,18px,0) scale(.985); filter:blur(5px) }
+.story-founder.reveal.is-visible { transform:none; filter:blur(0) }
+.story-chapter.reveal:not(.is-visible) { transform:translate3d(0,32px,0); filter:blur(4px) }
+.story-chapter.reveal.is-visible { transform:none; filter:blur(0) }
+.story-chapter:nth-of-type(even).reveal:not(.is-visible) { transform:translate3d(22px,20px,0); filter:blur(4px) }
+.story-philosophy.reveal:not(.is-visible) { transform:translate3d(0,28px,0) scale(.99); filter:blur(5px) }
+.story-philosophy.reveal.is-visible { transform:none; filter:blur(0) }
+.story-manifesto.reveal:not(.is-visible) { transform:translate3d(0,26px,0); filter:blur(4px) }
+.story-manifesto.reveal.is-visible { transform:none; filter:blur(0) }
+.contact-intro.reveal:not(.is-visible) { transform:translate3d(0,26px,0) scale(.99); filter:blur(4px) }
+.contact-intro.reveal.is-visible { transform:none; filter:blur(0) }
+.contact-details>div.reveal:not(.is-visible) { transform:translate3d(-22px,12px,0); filter:blur(3px) }
+.contact-details>div.reveal.is-visible,.contact-form.reveal.is-visible { transform:none; filter:blur(0) }
+.contact-details>div:nth-child(2) { transition-delay:.08s }
+.contact-details>div:nth-child(3) { transition-delay:.16s }
+.contact-form.reveal:not(.is-visible) { transform:translate3d(24px,16px,0); filter:blur(4px) }
+
+.contact-form .contact-method {
+  grid-column:1/-1;
+  grid-row:9;
+  min-width:0;
+  margin:0 0 18px;
+  padding:0;
+  border:0
+}
+.contact-method legend {
+  margin-bottom:10px;
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:.08em;
+  text-transform:uppercase
+}
+.contact-method-options {
+  display:flex;
+  gap:10px
+}
+.contact-form .contact-method-choice {
+  display:flex;
+  flex:1;
+  align-items:center;
+  gap:9px;
+  margin:0;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(255,255,255,.42);
+  color:var(--ink);
+  letter-spacing:.02em;
+  text-transform:none;
+  cursor:pointer;
+  transition:border-color .2s,background .2s,transform .2s
+}
+.contact-form .contact-method-choice:has(input:checked) {
+  border-color:var(--olive);
+  background:rgba(119,123,99,.08)
+}
+.contact-form .contact-method-choice:hover { transform:translateY(-2px) }
+.contact-form .contact-method-choice input[type="radio"] {
+  flex:none;
+  width:15px;
+  height:15px;
+  margin:0;
+  padding:0;
+  border:0;
+  accent-color:var(--olive)
+}
+.contact-form .button { grid-row:10 }
+.contact-form .form-message { grid-row:11 }
+@media(max-width:450px) {
+  .contact-method-options { flex-direction:column }
 }
