@@ -1,11 +1,12 @@
 (() => {
   // Set the store's public inbox here; the Contact page and email form use this value.
   const siteContactEmail = 'wavestatewears.ws@gmail.com';
-  const gmailComposeUrl = (subject = '', body = '') => {
-    const params = new URLSearchParams({ view: 'cm', fs: '1', to: siteContactEmail });
-    if (subject) params.set('su', subject);
+  const emailComposeUrl = (subject = '', body = '') => {
+    const params = new URLSearchParams();
+    if (subject) params.set('subject', subject);
     if (body) params.set('body', body);
-    return `https://mail.google.com/mail/?${params.toString()}`;
+    const query = params.toString();
+    return `mailto:${siteContactEmail}${query ? `?${query}` : ''}`;
   };
   const revealItems = document.querySelectorAll('.intro, .featured, .quote-band, .newsletter, .shop-toolbar, .product-card, .story-image, .story-copy, .story-founder, .story-chapter, .story-philosophy, .story-manifesto, .values > div, .contact-intro, .contact-details > div, .contact-form');
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -226,9 +227,9 @@
   });
 
   const contactForm = document.querySelector('.contact-form');
-  document.querySelectorAll('[data-site-contact-link]').forEach((link) => { link.href = gmailComposeUrl(); });
+  document.querySelectorAll('[data-site-contact-link]').forEach((link) => { link.href = emailComposeUrl(); });
   document.querySelectorAll('[data-site-contact-email]').forEach((link) => {
-    link.href = gmailComposeUrl();
+    link.href = emailComposeUrl();
     link.textContent = `${siteContactEmail} \u2197`;
   });
   if (contactForm) {
@@ -262,8 +263,8 @@
         status.textContent = 'Opening your WhatsApp chat with your message ready to send.';
         return;
       }
-      status.textContent = 'Opening Gmail with your message ready to send.';
-      window.location.href = gmailComposeUrl(topic, message.replace(/\r?\n/g, '\r\n'));
+      status.textContent = 'Opening your email app with your message ready to send.';
+      window.location.href = emailComposeUrl(topic, message.replace(/\r?\n/g, '\r\n'));
     });
   }
 })();
