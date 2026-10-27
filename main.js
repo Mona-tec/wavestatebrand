@@ -66,7 +66,7 @@
   const cart = document.createElement('div');
   cart.className = 'cart-overlay';
   cart.setAttribute('aria-hidden', 'true');
-  cart.innerHTML = '<aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title"><header class="cart-header"><div><p class="eyebrow">YOUR WAVESTATE EDIT</p><h2 id="cart-title">Your cart <span class="cart-item-count"></span></h2></div><button class="cart-close" type="button" aria-label="Close cart">\u00d7</button></header><div class="cart-items"></div><div class="cart-empty" hidden><p>Your cart is taking a little pause.</p><a class="text-link" href="shop.html">Explore the collection <span>\u2197</span></a></div><section class="cart-summary"><div class="cart-total"><span>Total</span><strong class="cart-total-value">\u20a60</strong></div><p class="cart-shipping-note">Delivery and any applicable fees are calculated at checkout.</p><button class="button button-dark cart-checkout" type="button">Continue to checkout <span>\u2197</span></button><button class="cart-clear" type="button">Delete all items</button><form class="checkout-form" hidden><p class="eyebrow">A FEW DETAILS</p><label for="checkout-name">Full name</label><input id="checkout-name" name="name" autocomplete="name" required><label for="checkout-email">Email</label><input id="checkout-email" name="email" type="email" required><label for="checkout-address">Delivery address</label><textarea id="checkout-address" name="address" rows="2" required></textarea><p class="checkout-note">Online payment is not connected yet. Your selected items and total are ready for checkout.</p><button class="button button-dark" type="submit">Review order <span>\u2197</span></button><p class="checkout-message" aria-live="polite"></p></form></section></aside>';
+  cart.innerHTML = '<aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title"><header class="cart-header"><div><p class="eyebrow">YOUR WAVESTATE EDIT</p><h2 id="cart-title">Your cart <span class="cart-item-count"></span></h2></div><button class="cart-close" type="button" aria-label="Close cart">\u00d7</button></header><div class="cart-items"></div><div class="cart-empty" hidden><p>Your cart is taking a little pause.</p><a class="text-link" href="shop.html">Explore the collection <span>\u2197</span></a></div><section class="cart-summary"><div class="cart-total"><span>Total</span><strong class="cart-total-value">\u20a60</strong></div><p class="cart-shipping-note">Delivery and any applicable fees are calculated at checkout.</p><button class="button button-dark cart-checkout" type="button">Continue to checkout <span>\u2197</span></button><button class="cart-clear" type="button">Delete all items</button><form class="checkout-form" hidden><p class="eyebrow">A FEW DETAILS</p><label for="checkout-name">Full name</label><input id="checkout-name" name="name" autocomplete="name" required><label for="checkout-email">Email</label><input id="checkout-email" name="email" type="email" required><label for="checkout-phone">Phone number</label><input id="checkout-phone" name="phone" type="tel" required><label for="checkout-whatsapp">WhatsApp number</label><input id="checkout-whatsapp" name="whatsapp" type="tel"><label for="checkout-address">Delivery address</label><textarea id="checkout-address" name="address" rows="2" required></textarea><button class="button button-dark" type="submit">Review order <span>\u2197</span></button><p class="checkout-message" aria-live="polite"></p></form><section class="checkout-review" hidden><p class="eyebrow">REVIEW YOUR ORDER</p><div class="review-recipient"><h3>Recipient details</h3><dl class="review-details"><div><dt>Name</dt><dd data-review="name"></dd></div><div><dt>Email</dt><dd data-review="email"></dd></div><div><dt>Phone</dt><dd data-review="phone"></dd></div><div><dt>WhatsApp</dt><dd data-review="whatsapp"></dd></div><div><dt>Address</dt><dd data-review="address"></dd></div></dl></div><div class="review-items"><h3>Your order</h3><table class="review-table"><thead><tr><th>Item</th><th>Unit</th><th>Qty</th><th>Line total</th></tr></thead><tbody data-review="items"></tbody><tfoot><tr><td colspan="3">Subtotal</td><td><strong data-review="subtotal"></strong></td></tr><tr><td colspan="3">Total</td><td><strong class="review-grand-total" data-review="total"></strong></td></tr></tfoot></table></div><div class="review-actions"><button class="button button-dark review-continue" type="button">Continue <span>\u2197</span></button><button class="button button-ghost review-back" type="button">Back</button></div></section><section class="checkout-share" hidden><p class="eyebrow">VALIDATE YOUR ORDER</p><p class="checkout-share-note">Choose where to send your order.</p><div class="share-options"><button class="share-option" data-share="gmail"><span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 8l9 5 9-5M4 13l8 4 8-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="share-label">Gmail</span></button><button class="share-option" data-share="whatsapp"><span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-4.4 19.1l-.9.5 1.7-1.7A10 10 0 0 0 12 2Zm3.3 13.7c-.2.3-1.2.4-1.4.4s-.6-.1-.6-.1l-2.9-.8A1 1 0 0 1 6 13.2l-.5-.9a1 1 0 0 1 .1-.9l.8-.4a1 1 0 0 1 1 .1l2.4 1.5a1 1 0 0 1 .3 1.2l-.4.8c-.1.3-.2.5-.4.6Z" fill="currentColor"/></svg></span><span class="share-label">WhatsApp</span></button><button class="share-option" data-share="snapchat"><span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c-2.8 0-4.5 2.1-4.5 5.1 0 1 .1 2.2-.1 3.1-.2.9-1.2 1.6-2.4 1.9-.5.1-.5.7 0 .9l1.8.6c.4.2.4.4.3.8-.2.5-.7.8-1.5 1.1-.4.1-.4.6 0 .7.4.2 1 .2 1.5.2.6 0 .8.5 1.2 1 .5.6 1.3.9 2.1.6.5-.2 1-.4 1.6-.4s1.1.2 1.6.4c.8.3 1.6 0 2.1-.6.4-.5.6-1 1.2-1 .5 0 1.1 0 1.5-.2.4-.1.4-.6 0-.7-.8-.3-1.3-.6-1.5-1.1-.1-.4-.1-.6.3-.8l1.8-.6c.5-.2.5-.8 0-.9-1.2-.3-2.2-1-2.4-1.9-.2-.9-.1-2.1-.1-3.1 0-3-1.7-5.1-4.5-5.1Z" fill="currentColor"/></svg></span><span class="share-label">Snapchat</span></button></div><div class="review-actions"><button class="button button-ghost share-back" type="button">Back</button></div></section></section></aside>';
   document.documentElement.appendChild(cart);
   const showCartToast = (message) => {
     let toast = document.querySelector('.cart-toast');
@@ -120,7 +120,86 @@
   });
   cart.querySelector('.cart-clear').addEventListener('click', () => saveCart([]));
   cart.querySelector('.cart-checkout').addEventListener('click', () => { const form = cart.querySelector('.checkout-form'); form.hidden = false; form.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); cart.querySelector('#checkout-name').focus({ preventScroll: true }); });
-  cart.querySelector('.checkout-form').addEventListener('submit', (event) => { event.preventDefault(); cart.querySelector('.checkout-message').textContent = 'Your order details are ready. Online payment still needs to be connected.'; });
+  cart.querySelector('.checkout-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const form = cart.querySelector('.checkout-form');
+    const review = cart.querySelector('.checkout-review');
+    const name = form.querySelector('#checkout-name').value.trim();
+    const email = form.querySelector('#checkout-email').value.trim();
+    const phone = form.querySelector('#checkout-phone').value.trim();
+    const whatsapp = form.querySelector('#checkout-whatsapp').value.trim();
+    const address = form.querySelector('#checkout-address').value.trim();
+    review.querySelector('[data-review="name"]').textContent = name;
+    review.querySelector('[data-review="email"]').textContent = email;
+    review.querySelector('[data-review="phone"]').textContent = phone;
+    review.querySelector('[data-review="whatsapp"]').textContent = whatsapp;
+    review.querySelector('[data-review="address"]').textContent = address;
+    const items = getCartItems();
+    review.querySelector('[data-review="items"]').innerHTML = items.map((item) => `<tr><td><strong>${escapeHtml(item.name)}</strong><br><span class="review-item-meta">${escapeHtml(item.color)}${item.size ? ` \u00b7 ${escapeHtml(item.size)}` : ''}</span></td><td>${formatNaira(item.price)}</td><td>${item.quantity}</td><td><strong>${formatNaira(item.price * item.quantity)}</strong></td></tr>`).join('');
+    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    review.querySelector('[data-review="subtotal"]').textContent = formatNaira(subtotal);
+    review.querySelector('[data-review="total"]').textContent = formatNaira(subtotal);
+    form.hidden = true;
+    review.hidden = false;
+    review.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+  cart.querySelector('.checkout-review').addEventListener('click', (event) => {
+    const back = event.target.closest('.review-back');
+    if (back) {
+      cart.querySelector('.checkout-review').hidden = true;
+      cart.querySelector('.checkout-form').hidden = false;
+      cart.querySelector('#checkout-name').focus({ preventScroll: true });
+      return;
+    }
+    const continueBtn = event.target.closest('.review-continue');
+    if (continueBtn) {
+      const review = cart.querySelector('.checkout-review');
+      const share = cart.querySelector('.checkout-share');
+      const name = review.querySelector('[data-review="name"]').textContent;
+      const email = review.querySelector('[data-review="email"]').textContent;
+      const phone = review.querySelector('[data-review="phone"]').textContent;
+      const whatsapp = review.querySelector('[data-review="whatsapp"]').textContent;
+      const address = review.querySelector('[data-review="address"]').textContent;
+      const items = getCartItems();
+      const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const lineItems = items.map((item) => `• ${item.name} (${item.color}${item.size ? `, ${item.size}` : ''}) x${item.quantity} — ${formatNaira(item.price * item.quantity)}`).join('\n');
+      const orderDetails = `WAVESTATE ORDER\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nWhatsApp: ${whatsapp || '—'}\nAddress: ${address}\n\nItems:\n${lineItems}\n\nTotal: ${formatNaira(total)}`;
+      share.dataset.order = orderDetails;
+      cart.querySelector('.cart-checkout').hidden = true;
+      review.hidden = true;
+      share.hidden = false;
+      share.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+  });
+  cart.querySelector('.checkout-share').addEventListener('click', (event) => {
+    const button = event.target.closest('.share-option');
+    if (button) {
+      const share = cart.querySelector('.checkout-share');
+      const orderDetails = share.dataset.order || '';
+      const whatsappNumber = (cart.querySelector('#checkout-whatsapp').value.trim() || '2349038952675').replace(/\D/g, '');
+      const platform = button.dataset.share;
+      let url = '';
+      if (platform === 'gmail') {
+        url = gmailWebComposeUrl('Wavestate order', orderDetails);
+      } else if (platform === 'whatsapp') {
+        url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(orderDetails)}`;
+      } else if (platform === 'snapchat') {
+        url = 'https://www.snapchat.com/add/akanni_mhii1?share_id=CXKQ_li8Fwo&locale=en-GB&caption=' + encodeURIComponent(orderDetails);
+      }
+      if (url) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+      return;
+    }
+    const back = event.target.closest('.share-back');
+    if (back) {
+      cart.querySelector('.checkout-share').hidden = true;
+      cart.querySelector('.checkout-review').hidden = false;
+      cart.querySelector('.cart-checkout').hidden = false;
+      cart.querySelector('.checkout-review').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  });
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && cart.classList.contains('is-open')) closeCart(); });
   updateBagCount();
 
@@ -169,7 +248,7 @@
       dresses: [['Washed white','#eeeae1','photo-1551232864-3f0890e580d9',0],['Sea glass','#9aa99b','photo-1515886657613-9f3515b0c78f',9000],['Clay rose','#b78173','photo-1539008835657-9e8e9680c956',6000]],
       knitwear: [['Oat milk','#d7cbbb','photo-1620799140408-edc6dcb6d633',0],['Cloud grey','#aaa9a1','photo-1576566588028-4147f3842f27',5000],['Forest','#485648','photo-1618354691373-d851c5c3a990',8000]],
       tops: [['Black','#252525','black ascension.jpg',0],['White','#f0eee8','white tank top with black stripes.jpg',3000],['Royal blue','#315b9a','royal blue tank top with white stripes.jpg',4000],['Cloud','#d6d4ce','round neck.jpg',0],['Red','#a53b34','red dark ascension.jpg',3000],['Rose','#bc7e83','female round neck.jpg',0],['Jersey Polo','#566477','Jersey polo.jpg',0],['Signature Print','#827b70','buttoned shirt options.jpg',5000],['Red Stripe','#a53b34','black tank top with red stripes.jpg',0]],
-      jerseys: [['Black','#252525','black jersey.jpg',0],['Green','#49634e','green jersey.jpg',0],['Light blue','#91b9d5','light blue jersey.jpg',0],['Off-white','#eeeae1','off-white customizable jersey.jpg',13000]],
+      jerseys: [['Black','#252525','black jersey.jpg',0],['Green','#49634e','green jersey.jpg',0],['Light blue','#91b9d5','light blue jersey.jpg',0],['Off-white','#eeeae1','off-white customizable jersey.jpg',13000],['White','#f0eee8','white jersey.jpg',0]],
       sets: [['Olive','#656953','street cargo set.jpg',0],['Black','#252525','black joggers.jpg',-5000],['White','#f0eee8','white joggers.jpg',-5000]],
       accessories: [['Denim Blue','#647f9a','denim cap.jpg',0],['Camo','#64705b','trucker cap options.jpg',3000],['Black','#252525','beanie.jpg',-2000]]
     };
@@ -227,7 +306,8 @@
       ['Off-white','#eeeae1','off-white customizable jersey.jpg',0],
       ['Pink','#c77c91','pink jersey.jpg',0],
       ['Purple','#72538b','purple jersey.jpg',0],
-      ['Royal Blue','#315b9a','royal blue jersey.jpg',0]
+      ['Royal Blue','#315b9a','royal blue jersey.jpg',0],
+      ['White','#f0eee8','white jersey.jpg',0]
     ];
     const truckerCapShades = [
       ['Camo','#64705b','camouflage trucker cap.jpg',0],
@@ -245,10 +325,18 @@
       ['Set (black top)','#252525','street cargo set.jpg',0],
       ['Set (white top)','#f0eee8','street cargo set.jpg',0]
     ];
+    const signatureShades = [
+      ['Black','#252525','black signature.jpg',0],
+      ['Grey','#8b8b88','grey signature.jpg',0],
+      ['Pink','#c77c91','pink signature.jpg',0],
+      ['Red','#a53b34','red signature.jpg',0],
+      ['Sky Blue','#83b5d2','sky blue signature.jpg',0],
+      ['White','#f0eee8','white signature.jpg',0]
+    ];
     const variantImageUrl = (image, width, quality) => image.startsWith('photo-')
       ? `https://images.unsplash.com/${image}?auto=format&fit=crop&w=${width}&q=${quality}`
       : encodeURI(image);
-    let chosenName = ''; let chosenColor = ''; let chosenPrice = 0; let draftKey = ''; let isTooFlyPolo = false; let isMaleBasic = false; let isFemaleBasic = false; let isCampusHoodie = false; let isTooFlyCargo = false; let isBasicJoggers = false; let isCampusBeanie = false; let isCuffedJoggers = false; let isTrekkTank = false; let isCustomJersey = false; let isStreetCargo = false; let isTruckerCap = false; let isDenimCaps = false; let isCustomizable = false;
+    let chosenName = ''; let chosenColor = ''; let chosenPrice = 0; let draftKey = ''; let isTooFlyPolo = false; let isMaleBasic = false; let isFemaleBasic = false; let isCampusHoodie = false; let isTooFlyCargo = false; let isBasicJoggers = false; let isCampusBeanie = false; let isCuffedJoggers = false; let isTrekkTank = false; let isCustomJersey = false; let isStreetCargo = false; let isTruckerCap = false; let isDenimCaps = false; let isSignatureShirt = false; let isCustomizable = false;
     const drafts = new Map();
     const saveQuantity = () => {
       if (!draftKey || !chosenColor) return;
@@ -263,7 +351,7 @@
       const size = modal.querySelector('.options-size').hidden ? '' : ` \u00b7 ${selection.size || 'M'}`;
       choice.querySelector('.variant-selected-qty').textContent = amount ? `${amount} selected${size}` : (modal.querySelector('.options-size').hidden ? 'Choose quantity' : 'Choose size & quantity');
     });
-    const showOptions = (card) => {
+const showOptions = (card) => {
       chosenName = card.querySelector('h3')?.textContent.trim() || 'Wavestate piece';
       const photo = card.querySelector('.product-image img'); const basePrice = Number(card.dataset.price || 0);
       chosenPrice = basePrice; draftKey = chosenName; if (!drafts.has(draftKey)) drafts.set(draftKey, {});
@@ -283,8 +371,9 @@
       isStreetCargo = chosenName.toLowerCase() === 'street cargo sets';
       isTruckerCap = chosenName.toLowerCase() === 'wavestate trucker cap';
       isDenimCaps = chosenName.toLowerCase() === 'wavestate customizable denim caps';
+      isSignatureShirt = chosenName.toLowerCase() === 'wavestate signature shirt';
       isCustomizable = isCustomJersey || isDenimCaps;
-      const choices = isDarkAscension ? darkAscensionShades : isTooFlyPolo ? tooFlyPoloShades : isMaleBasic ? maleBasicShades : isFemaleBasic ? femaleBasicShades : isCampusHoodie ? campusHoodieShades : isTooFlyCargo ? tooFlyCargoShades : isBasicJoggers ? basicJoggerShades : isCampusBeanie ? campusBeanieShades : isCuffedJoggers ? cuffedJoggerShades : isTrekkTank ? trekkTankShades : isCustomJersey ? customizableJerseyShades : isStreetCargo ? streetCargoShades : isTruckerCap ? truckerCapShades : isDenimCaps ? denimCapShades : shades[card.dataset.category] || shades.outerwear; modal.querySelector('.options-size').hidden = ['bags', 'accessories'].includes(card.dataset.category);
+      const choices = isDarkAscension ? darkAscensionShades : isTooFlyPolo ? tooFlyPoloShades : isMaleBasic ? maleBasicShades : isFemaleBasic ? femaleBasicShades : isCampusHoodie ? campusHoodieShades : isTooFlyCargo ? tooFlyCargoShades : isBasicJoggers ? basicJoggerShades : isCampusBeanie ? campusBeanieShades : isCuffedJoggers ? cuffedJoggerShades : isTrekkTank ? trekkTankShades : isCustomJersey ? customizableJerseyShades : isSignatureShirt ? signatureShades : isStreetCargo ? streetCargoShades : isTruckerCap ? truckerCapShades : isDenimCaps ? denimCapShades : shades[card.dataset.category] || shades.outerwear; modal.querySelector('.options-size').hidden = ['bags', 'accessories'].includes(card.dataset.category);
       modal.querySelector('.custom-shade-field').hidden = true;
       modal.querySelector('.customization-field').hidden = true;
       modal.querySelector('.variant-list').innerHTML = choices.map(([color, , image, adjustment]) => {
