@@ -48,14 +48,22 @@
     document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
   }
 
-  const cartKey = 'wavestate-cart-items';
+const cartKey = 'wavestate-cart-items';
+  const historyKey = 'wavestate-order-history';
   const getCartItems = () => { try { return JSON.parse(localStorage.getItem(cartKey) || '[]'); } catch { return []; } };
   const getBagCount = () => getCartItems().reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
   const formatNaira = (amount) => `\u20a6${Math.round(amount).toLocaleString('en-NG')}`;
   const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
   const updateBagCount = () => document.querySelectorAll('.bag-count').forEach((count) => { count.textContent = String(getBagCount()); });
-  let renderCart = () => {};
   const saveCart = (items) => { localStorage.setItem(cartKey, JSON.stringify(items)); updateBagCount(); renderCart(); };
+  const getHistory = () => { try { return JSON.parse(localStorage.getItem(historyKey) || '[]'); } catch { return []; } };
+  const saveHistory = (orders) => { localStorage.setItem(historyKey, JSON.stringify(orders)); renderHistory(); };
+  const addOrderToHistory = (order) => {
+    const orders = getHistory();
+    orders.unshift(order);
+    saveHistory(orders.slice(0, 50));
+  };
+  let renderHistory = () => {};
   const addBagItem = (item, quantity = 1) => {
     const items = getCartItems();
     const existing = items.find((entry) => entry.name === item.name && entry.color === item.color && entry.size === item.size && (entry.customization || '') === (item.customization || ''));
@@ -66,7 +74,7 @@
   const cart = document.createElement('div');
   cart.className = 'cart-overlay';
   cart.setAttribute('aria-hidden', 'true');
-  cart.innerHTML = '<aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title"><header class="cart-header"><div><p class="eyebrow">YOUR WAVESTATE EDIT</p><h2 id="cart-title">Your cart <span class="cart-item-count"></span></h2></div><button class="cart-close" type="button" aria-label="Close cart">\u00d7</button></header><div class="cart-items"></div><div class="cart-empty" hidden><p>Your cart is taking a little pause.</p><a class="text-link" href="shop.html">Explore the collection <span>\u2197</span></a></div><section class="cart-summary"><div class="cart-total"><span>Total</span><strong class="cart-total-value">\u20a60</strong></div><p class="cart-shipping-note">Delivery and any applicable fees are calculated at checkout.</p><button class="button button-dark cart-checkout" type="button">Continue to checkout <span>\u2197</span></button><button class="cart-clear" type="button">Delete all items</button><form class="checkout-form" hidden><p class="eyebrow">A FEW DETAILS</p><label for="checkout-name">Full name</label><input id="checkout-name" name="name" autocomplete="name" required><label for="checkout-email">Email</label><input id="checkout-email" name="email" type="email" required><label for="checkout-phone">Phone number</label><input id="checkout-phone" name="phone" type="tel" required><label for="checkout-whatsapp">WhatsApp number</label><input id="checkout-whatsapp" name="whatsapp" type="tel"><label for="checkout-address">Delivery address</label><textarea id="checkout-address" name="address" rows="2" required></textarea><button class="button button-dark" type="submit">Review order <span>\u2197</span></button><p class="checkout-message" aria-live="polite"></p></form><section class="checkout-review" hidden><p class="eyebrow">REVIEW YOUR ORDER</p><div class="review-recipient"><h3>Recipient details</h3><dl class="review-details"><div><dt>Name</dt><dd data-review="name"></dd></div><div><dt>Email</dt><dd data-review="email"></dd></div><div><dt>Phone</dt><dd data-review="phone"></dd></div><div><dt>WhatsApp</dt><dd data-review="whatsapp"></dd></div><div><dt>Address</dt><dd data-review="address"></dd></div></dl></div><div class="review-items"><h3>Your order</h3><table class="review-table"><thead><tr><th>Item</th><th>Unit</th><th>Qty</th><th>Line total</th></tr></thead><tbody data-review="items"></tbody><tfoot><tr><td colspan="3">Subtotal</td><td><strong data-review="subtotal"></strong></td></tr><tr><td colspan="3">Total</td><td><strong class="review-grand-total" data-review="total"></strong></td></tr></tfoot></table></div><div class="review-actions"><button class="button button-dark review-continue" type="button">Continue <span>\u2197</span></button><button class="button button-ghost review-back" type="button">Back</button></div></section><section class="checkout-share" hidden><p class="eyebrow">VALIDATE YOUR ORDER</p><p class="checkout-share-note">Choose where to send your order.</p><div class="share-options"><button class="share-option" data-share="gmail"><span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 8l9 5 9-5M4 13l8 4 8-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="share-label">Gmail</span></button><button class="share-option" data-share="whatsapp"><span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-4.4 19.1l-.9.5 1.7-1.7A10 10 0 0 0 12 2Zm3.3 13.7c-.2.3-1.2.4-1.4.4s-.6-.1-.6-.1l-2.9-.8A1 1 0 0 1 6 13.2l-.5-.9a1 1 0 0 1 .1-.9l.8-.4a1 1 0 0 1 1 .1l2.4 1.5a1 1 0 0 1 .3 1.2l-.4.8c-.1.3-.2.5-.4.6Z" fill="currentColor"/></svg></span><span class="share-label">WhatsApp</span></button><button class="share-option" data-share="snapchat"><span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c-2.8 0-4.5 2.1-4.5 5.1 0 1 .1 2.2-.1 3.1-.2.9-1.2 1.6-2.4 1.9-.5.1-.5.7 0 .9l1.8.6c.4.2.4.4.3.8-.2.5-.7.8-1.5 1.1-.4.1-.4.6 0 .7.4.2 1 .2 1.5.2.6 0 .8.5 1.2 1 .5.6 1.3.9 2.1.6.5-.2 1-.4 1.6-.4s1.1.2 1.6.4c.8.3 1.6 0 2.1-.6.4-.5.6-1 1.2-1 .5 0 1.1 0 1.5-.2.4-.1.4-.6 0-.7-.8-.3-1.3-.6-1.5-1.1-.1-.4-.1-.6.3-.8l1.8-.6c.5-.2.5-.8 0-.9-1.2-.3-2.2-1-2.4-1.9-.2-.9-.1-2.1-.1-3.1 0-3-1.7-5.1-4.5-5.1Z" fill="currentColor"/></svg></span><span class="share-label">Snapchat</span></button></div><div class="review-actions"><button class="button button-ghost share-back" type="button">Back</button></div></section></section></aside>';
+  cart.innerHTML = '<aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title"><header class="cart-header"><div><p class="eyebrow">YOUR WAVESTATE EDIT</p><h2 id="cart-title">Your cart <span class="cart-item-count"></span></h2></div><button class="cart-close" type="button" aria-label="Close cart">\u00d7</button></header><div class="cart-items"></div><div class="cart-empty" hidden><p>Your cart is taking a little pause.</p><a class="text-link" href="shop.html">Explore the collection <span>\u2197</span></a></div><section class="cart-summary"><div class="cart-total"><span>Total</span><strong class="cart-total-value">\u20a60</strong></div><p class="cart-shipping-note">Delivery and any applicable fees are calculated at checkout.</p><button class="button button-dark cart-checkout" type="button">Continue to checkout <span>\u2197</span></button><button class="cart-clear" type="button">Delete all items</button></div></section><section class="cart-history"><div class="cart-history-head"><h3>Your history</h3><button class="cart-history-clear" type="button" title="Clear history">Clear</button></div><div class="cart-history-list"></div></section><form class="checkout-form" hidden><p class="eyebrow">A FEW DETAILS</p><label for="checkout-name">Full name</label><input id="checkout-name" name="name" autocomplete="name" required><label for="checkout-email">Email</label><input id="checkout-email" name="email" type="email" required><label for="checkout-phone">Phone number</label><input id="checkout-phone" name="phone" type="tel" required><label for="checkout-whatsapp">WhatsApp number</label><input id="checkout-whatsapp" name="whatsapp" type="tel"><label for="checkout-address">Delivery address</label><textarea id="checkout-address" name="address" rows="2" required></textarea><button class="button button-dark" type="submit">Review order <span>\u2197</span></button><p class="checkout-message" aria-live="polite"></p></form><section class="checkout-review" hidden><p class="eyebrow">REVIEW YOUR ORDER</p><div class="review-recipient"><h3>Recipient details</h3><dl class="review-details"><div><dt>Name</dt><dd data-review="name"></dd></div><div><dt>Email</dt><dd data-review="email"></dd></div><div><dt>Phone</dt><dd data-review="phone"></dd></div><div><dt>WhatsApp</dt><dd data-review="whatsapp"></dd></div><div><dt>Address</dt><dd data-review="address"></dd></div></dl></div><div class="review-items"><h3>Your order</h3><table class="review-table"><thead><tr><th>Item</th><th>Unit</th><th>Qty</th><th>Line total</th></tr></thead><tbody data-review="items"></tbody><tfoot><tr><td colspan="3">Subtotal</td><td><strong data-review="subtotal"></strong></td></tr><tr><td colspan="3">Total</td><td><strong class="review-grand-total" data-review="total"></strong></td></tr></tfoot></table></div><div class="review-actions"><button class="button button-dark review-continue" type="button">Continue <span>\u2197</span></button><button class="button button-ghost review-back" type="button">Back</button></div></section><section class="checkout-share" hidden><p class="eyebrow">VALIDATE YOUR ORDER</p><p class="checkout-share-note">Choose where to send your order.</p><div class="share-options"><button class="share-option" data-share="gmail"><span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 8l9 5 9-5M4 13l8 4 8-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="share-label">Gmail</span></button><button class="share-option" data-share="whatsapp"><span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-4.4 19.1l-.9.5 1.7-1.7A10 10 0 0 0 12 2Zm3.3 13.7c-.2.3-1.2.4-1.4.4s-.6-.1-.6-.1l-2.9-.8A1 1 0 0 1 6 13.2l-.5-.9a1 1 0 0 1 .1-.9l.8-.4a1 1 0 0 1 1 .1l2.4 1.5a1 1 0 0 1 .3 1.2l-.4.8c-.1.3-.2.5-.4.6Z" fill="currentColor"/></svg></span><span class="share-label">WhatsApp</span></button><button class="share-option" data-share="snapchat"><span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c-2.8 0-4.5 2.1-4.5 5.1 0 1 .1 2.2-.1 3.1-.2.9-1.2 1.6-2.4 1.9-.5.1-.5.7 0 .9l1.8.6c.4.2.4.4.3.8-.2.5-.7.8-1.5 1.1-.4.1-.4.6 0 .7.4.2 1 .2 1.5.2.6 0 .8.5 1.2 1 .5.6 1.3.9 2.1.6.5-.2 1-.4 1.6-.4s1.1.2 1.6.4c.8.3 1.6 0 2.1-.6.4-.5.6-1 1.2-1 .5 0 1.1 0 1.5-.2.4-.1.4-.6 0-.7-.8-.3-1.3-.6-1.5-1.1-.1-.4-.1-.6.3-.8l1.8-.6c.5-.2.5-.8 0-.9-1.2-.3-2.2-1-2.4-1.9-.2-.9-.1-2.1-.1-3.1 0-3-1.7-5.1-4.5-5.1Z" fill="currentColor"/></svg></span><span class="share-label">Snapchat</span></button></div><div class="review-actions"><button class="button button-ghost share-back" type="button">Back</button></div></section></section></aside>';
   document.documentElement.appendChild(cart);
   const showCartToast = (message) => {
     let toast = document.querySelector('.cart-toast');
@@ -79,7 +87,7 @@
   const closeCart = () => { cart.classList.remove('is-open'); cart.setAttribute('aria-hidden', 'true'); document.body.classList.remove('cart-open'); document.documentElement.classList.remove('cart-open'); };
   const openCart = () => {
     if (nav?.classList.contains('open')) { nav.classList.remove('open'); menuButton?.setAttribute('aria-expanded', 'false'); }
-    renderCart(); cart.classList.add('is-open'); cart.setAttribute('aria-hidden', 'false');
+    renderCart(); renderHistory(); cart.classList.add('is-open'); cart.setAttribute('aria-hidden', 'false');
     document.body.classList.add('cart-open'); document.documentElement.classList.add('cart-open'); cart.querySelector('.cart-close').focus();
   };
   document.querySelectorAll('.bag-link').forEach((link) => link.addEventListener('click', (event) => { event.preventDefault(); openCart(); }));
@@ -100,8 +108,19 @@
       const imageSection = ['top', 'bottom', 'left', 'right'].includes(item.imageSection) ? ` split-image-${item.imageSection}` : '';
       return `<article class="cart-item"><img class="cart-item-image${imageSection}" src="${item.image}" alt="${item.name} ${item.color}"><div class="cart-item-info"><h3>${item.name}</h3><p class="cart-item-color">${item.color}</p>${customizationLine}<div class="cart-edit-row">${sizeEditor}<div class="cart-qty-control"><span>Quantity</span><div class="cart-quantity"><button type="button" data-cart-action="decrease" data-index="${index}" aria-label="Decrease quantity">\u2212</button><span>${item.quantity}</span><button type="button" data-cart-action="increase" data-index="${index}" aria-label="Increase quantity">+</button></div></div></div><p class="cart-unit-price">Unit price <strong>${formatNaira(item.price)}</strong></p><div class="cart-line-total"><span>Item total</span><strong>${formatNaira(item.price * item.quantity)}</strong></div></div><button class="cart-remove" type="button" data-cart-action="remove" data-index="${index}" aria-label="Remove ${item.name}">Remove</button></article>`;
     }).join('');
-    cart.querySelector('.cart-total-value').textContent = formatNaira(items.reduce((sum, item) => sum + item.price * item.quantity, 0));
-  };
+cart.querySelector('.cart-total-value').textContent = formatNaira(items.reduce((sum, item) => sum + item.price * item.quantity, 0));
+    };
+    renderHistory = () => {
+      const list = cart.querySelector('.cart-history-list');
+      const orders = getHistory();
+      list.innerHTML = orders.length === 0
+        ? '<p class="cart-history-empty">No orders yet. Once you send an order, it will appear here.</p>'
+        : orders.map((order, index) => {
+            const date = order.date ? new Date(order.date).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : '';
+            const itemsHtml = (order.items || []).map((item) => `<li><strong>${escapeHtml(item.name)}</strong> <span>${escapeHtml(item.color)}${item.size ? ` \u00b7 ${escapeHtml(item.size)}` : ''}</span> <span>x${item.quantity}</span> <strong>${formatNaira(item.price * item.quantity)}</strong></li>`).join('');
+            return `<article class="cart-history-entry"><div class="cart-history-entry-head"><strong>Order #${index + 1}</strong><span>${escapeHtml(date)}</span></div><p class="cart-history-recipient">${escapeHtml(order.name || '')} \u00b7 ${escapeHtml(order.email || '')} \u00b7 ${escapeHtml(order.phone || '')}</p><p class="cart-history-total">Total <strong>${formatNaira(order.total || 0)}</strong></p><ul class="cart-history-items">${itemsHtml}</ul><div class="cart-history-actions"><button class="button button-ghost cart-history-reorder" type="button" data-index="${index}">Reorder</button></div></article>`;
+          }).join('');
+    };
   cart.querySelector('.cart-items').addEventListener('click', (event) => {
     const button = event.target.closest('button[data-cart-action]'); if (!button) return;
     const items = getCartItems(); const index = Number(button.dataset.index); const action = button.dataset.cartAction;
@@ -119,6 +138,17 @@
     saveCart(items);
   });
   cart.querySelector('.cart-clear').addEventListener('click', () => saveCart([]));
+  cart.querySelector('.cart-history-clear').addEventListener('click', () => saveHistory([]));
+  cart.querySelector('.cart-history-list').addEventListener('click', (event) => {
+    const reorder = event.target.closest('.cart-history-reorder');
+    if (!reorder) return;
+    const orders = getHistory();
+    const order = orders[Number(reorder.dataset.index)];
+    if (!order) return;
+    const items = (order.items || []).map((item) => ({ ...item, quantity: item.quantity || 1 }));
+    saveCart(items);
+    showCartToast('Previous order restored to your cart.');
+  });
   cart.querySelector('.cart-checkout').addEventListener('click', () => { const form = cart.querySelector('.checkout-form'); form.hidden = false; form.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); cart.querySelector('#checkout-name').focus({ preventScroll: true }); });
   cart.querySelector('.checkout-form').addEventListener('submit', (event) => {
     event.preventDefault();
@@ -165,6 +195,12 @@
       const lineItems = items.map((item) => `• ${item.name} (${item.color}${item.size ? `, ${item.size}` : ''}) x${item.quantity} — ${formatNaira(item.price * item.quantity)}`).join('\n');
       const orderDetails = `WAVESTATE ORDER\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nWhatsApp: ${whatsapp || '—'}\nAddress: ${address}\n\nItems:\n${lineItems}\n\nTotal: ${formatNaira(total)}`;
       share.dataset.order = orderDetails;
+      share.dataset.orderName = name || '';
+      share.dataset.orderEmail = email || '';
+      share.dataset.orderPhone = phone || '';
+      share.dataset.orderAddress = address || '';
+      share.dataset.orderTotal = String(total || 0);
+      share.dataset.orderItems = JSON.stringify(items);
       cart.querySelector('.cart-checkout').hidden = true;
       review.hidden = true;
       share.hidden = false;
@@ -188,6 +224,18 @@
       }
       if (url) {
         window.open(url, '_blank', 'noopener,noreferrer');
+        const items = JSON.parse(share.dataset.orderItems || '[]');
+        addOrderToHistory({
+          date: new Date().toISOString(),
+          name: share.dataset.orderName || '',
+          email: share.dataset.orderEmail || '',
+          phone: share.dataset.orderPhone || '',
+          address: share.dataset.orderAddress || '',
+          total: Number(share.dataset.orderTotal || 0),
+          items
+        });
+        saveCart([]);
+        showCartToast('Order sent. Your cart is clear and the order is in your history.');
       }
       return;
     }
